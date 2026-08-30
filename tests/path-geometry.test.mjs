@@ -19,6 +19,13 @@ test('inserting cubic midpoint splits into two cubics',()=>{
   const split=insertMidpoint(s,1); assert.equal(split.length,3); assert.equal(split[1].cmd,'C'); assert.equal(split[2].cmd,'C');
 });
 
+test('inserting quadratic midpoint preserves endpoint geometry',()=>{
+  const s=normalizePathData('M0 0 Q10 20 20 0');
+  const split=insertMidpoint(s,1);
+  assert.equal(split.length,3); assert.equal(split[1].cmd,'Q'); assert.equal(split[2].cmd,'Q');
+  assert.deepEqual([split[2].x,split[2].y],[20,0]);
+});
+
 test('segment conversion and close toggle serialize valid path',()=>{
   const s=normalizePathData('M0 0 L10 0 L10 10');
   const curve=convertSegment(s,1,'curve'); assert.equal(curve[1].cmd,'C');
