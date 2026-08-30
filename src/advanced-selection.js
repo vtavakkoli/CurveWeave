@@ -53,7 +53,7 @@ function topSelectableNodes() {
   const svg = currentSvg();
   if (!svg) return [];
   return [...svg.querySelectorAll('[data-cw-id]')].filter(node => {
-    if (node.closest('defs') || node.getAttribute('display') === 'none' || lockedNodes.has(node)) return false;
+    if (node.closest('defs') || node.getAttribute('display') === 'none' || lockedNodes.has(node) || node.dataset.cwConnector === 'true') return false;
     const parentSelectable = node.parentElement?.closest('[data-cw-id]');
     return !parentSelectable || !svg.contains(parentSelectable);
   });
@@ -223,7 +223,7 @@ function finishMarquee() {
 
   if (isClick) {
     const target = drag.target?.closest?.('[data-cw-id]');
-    if (target && !lockedNodes.has(target)) matches = [target];
+    if (target && !lockedNodes.has(target) && target.dataset.cwConnector !== 'true') matches = [target];
   } else {
     matches = topSelectableNodes().filter(node => {
       const box = node.getBoundingClientRect();
@@ -429,8 +429,8 @@ function invertSelection() {
 function lockSelection() {
   const nodes = operationNodes();
   if (!nodes.length) return;
-  nodes.forEach(node => lockedNodes.add(node));
   clearSelection();
+  nodes.forEach(node => lockedNodes.add(node));
   syncLayerDecorations();
   updateAdvancedPanel();
   toast(`${nodes.length} object${nodes.length === 1 ? '' : 's'} locked`);
@@ -462,8 +462,9 @@ function syncLayerDecorations() {
     const node = nodeForLayer(button);
     const locked = !!node && lockedNodes.has(node);
     button.classList.toggle('cw-locked', locked);
-    button.querySelector('.cw-lock-mark')?.remove();
-    if (locked) {
+    const existingMark = button.querySelector('.cw-lock-mark');
+    if (!locked) existingMark?.remove();
+    else if (!existingMark) {
       const mark = document.createElement('span');
       mark.className = 'cw-lock-mark';
       mark.textContent = '🔒';
