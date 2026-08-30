@@ -48,8 +48,10 @@ export function alignmentOffset(item, bounds, mode) {
   }
 }
 
-// Keep pure selection utilities Node-testable while loading the professional
-// browser-only vector studio through the existing advanced-selection entrypoint.
+// Keep pure selection utilities Node-testable while loading browser-only editor suites.
 if (typeof document !== 'undefined') {
-  import('./pro-vector.js').catch(error => console.error('CurveWeave Pro Vector Studio failed to load', error));
+  import('./pro-vector.js')
+    .then(() => import('./special-layer-support.js'))
+    .then(() => import('./advanced-studio.js'))
+    .catch(error => console.error('CurveWeave professional editor suites failed to load', error));
 }
