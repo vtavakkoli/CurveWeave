@@ -27,11 +27,12 @@ CurveWeave is built for the space between a heavyweight design suite and a raw t
 
 ### Highlights
 
-- **Direct vector editing** — select, move, resize, duplicate, reorder, group and ungroup SVG elements.
-- **Drawing tools** — rectangle, ellipse, pen/path and text creation.
-- **Live inspector** — fill, stroke, opacity, dimensions, layer order and text controls.
+- **Direct vector editing** — select, move, resize, duplicate, reorder, group and ungroup SVG elements; nudge selections precisely with the arrow keys.
+- **Drawing tools** — rectangle, ellipse, pen/path, text and smart object-to-object connectors.
+- **Text inspector** — edit text content, font family, font size and font color directly from the properties panel.
+- **Clipboard SVG paste** — paste SVG markup from design tools or the clipboard directly into the current canvas; imported IDs are namespaced to reduce collisions.
 - **Source workspace** — formatted SVG source with explicit apply-to-canvas workflow.
-- **Repair & optimize** — removes scripts, event handlers, metadata, editor noise and excess numeric precision.
+- **Geometric repair & optimize** — removes scripts, event handlers, metadata and editor noise, while simplifying redundant line anchors, polyline points and near-redundant Bézier segments with an adjustable tolerance.
 - **Privacy by design** — all document processing happens in the browser; remote references in opened SVGs are removed.
 - **Undo / redo** — an in-memory document history keeps editing reversible.
 - **SVG + PNG export** — save clean vector source or a 2× PNG rendition.
@@ -69,6 +70,9 @@ Node.js 20+ is used only for repository validation. The application itself has n
 | Ellipse | `E` |
 | Pen | `P` |
 | Text | `T` |
+| Connector | `C` |
+| Move selection | `Arrow keys` |
+| Move selection by 10 units | `Shift + Arrow keys` |
 | Finish pen path | `Enter` |
 | Cancel / clear selection | `Esc` |
 | Duplicate | `Ctrl/Cmd + D` |
@@ -78,6 +82,7 @@ Node.js 20+ is used only for repository validation. The application itself has n
 | Open | `Ctrl/Cmd + O` |
 | Save SVG | `Ctrl/Cmd + S` |
 | Zoom | `Ctrl/Cmd + wheel` |
+| Paste SVG | `Ctrl/Cmd + V` |
 
 ## Security and privacy model
 
@@ -92,8 +97,9 @@ CurveWeave/
 ├── index.html               # application shell
 ├── styles.css               # responsive editor UI
 ├── src/
-│   ├── app.js               # editor interaction/state engine
-│   └── svg-utils.js         # SVG sanitation/repair/stat helpers
+│   ├── app.js               # core editor interaction/state engine
+│   ├── enhancements.js      # text, connectors, paste and keyboard precision tools
+│   └── svg-utils.js         # SVG sanitation, geometry simplification and stats
 ├── assets/icon.svg          # project identity
 ├── tests/                   # dependency-free Node tests
 ├── docs/ARCHITECTURE.md     # design and extension guide
