@@ -1,0 +1,26 @@
+name: Feature request
+description: Propose an editor or SVG workflow improvement
+title: "[Feature]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or workflow
+      description: What SVG editing task is difficult today?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed capability
+      description: Describe the interaction or output you would like.
+    validations:
+      required: true
+  - type: dropdown
+    id: localfirst
+    attributes:
+      label: Can this remain fully client-side?
+      options: [Yes, No, Unsure]
+    validations:
+      required: true

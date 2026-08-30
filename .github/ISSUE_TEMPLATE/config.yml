@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Security vulnerability
+    url: https://github.com/vtavakkoli/CurveWeave/security
+    about: Please use a private GitHub security channel for vulnerabilities.
