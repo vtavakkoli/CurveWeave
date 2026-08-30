@@ -53,5 +53,6 @@ if (typeof document !== 'undefined') {
   import('./pro-vector.js')
     .then(() => import('./special-layer-support.js'))
     .then(() => import('./advanced-studio.js'))
+    .then(() => import('./ui-workspace.js'))
     .catch(error => console.error('CurveWeave professional editor suites failed to load', error));
 }
