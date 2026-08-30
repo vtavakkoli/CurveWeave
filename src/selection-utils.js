@@ -47,3 +47,9 @@ export function alignmentOffset(item, bounds, mode) {
     default: return { dx: 0, dy: 0 };
   }
 }
+
+// Keep pure selection utilities Node-testable while loading the professional
+// browser-only vector studio through the existing advanced-selection entrypoint.
+if (typeof document !== 'undefined') {
+  import('./pro-vector.js').catch(error => console.error('CurveWeave Pro Vector Studio failed to load', error));
+}
