@@ -166,7 +166,7 @@ export function insertMidpoint(segments, index) {
     next.splice(index,1,{cmd:'C',x1:a.x,y1:a.y,x2:d.x,y2:d.y,x:m.x,y:m.y},{cmd:'C',x1:e.x,y1:e.y,x2:c.x,y2:c.y,x:p3.x,y:p3.y}); return next;
   }
   if (seg.cmd === 'Q') {
-    const p0={x:prev.x,y:prev.y}, p1={x:seg.x1,y:seg.y1}, p2={x:seg.x,y,y:seg.y};
+    const p0={x:prev.x,y:prev.y}, p1={x:seg.x1,y:seg.y1}, p2={x:seg.x,y:seg.y};
     const a=midpoint(p0,p1), b=midpoint(p1,p2), m=midpoint(a,b);
     next.splice(index,1,{cmd:'Q',x1:a.x,y1:a.y,x:m.x,y:m.y},{cmd:'Q',x1:b.x,y1:b.y,x:p2.x,y:p2.y}); return next;
   }
