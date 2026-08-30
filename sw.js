@@ -1,5 +1,5 @@
-const CACHE = 'curveweave-v4';
-const ASSETS = ['./','./index.html','./styles.css','./src/app.js','./src/svg-utils.js','./src/enhancements.js','./src/selection-utils.js','./src/advanced-selection.js','./src/path-geometry.js','./src/boolean-utils.js','./src/pro-vector.js','./assets/icon.svg','./manifest.webmanifest'];
+const CACHE = 'curveweave-v5';
+const ASSETS = ['./','./index.html','./styles.css','./src/app.js','./src/svg-utils.js','./src/enhancements.js','./src/selection-utils.js','./src/advanced-selection.js','./src/path-geometry.js','./src/boolean-utils.js','./src/pro-vector.js','./src/advanced-utils.js','./src/special-layer-support.js','./src/advanced-studio.js','./assets/icon.svg','./manifest.webmanifest'];
 self.addEventListener('install', event => event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(ASSETS)).then(() => self.skipWaiting())));
 self.addEventListener('activate', event => event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())));
 self.addEventListener('fetch', event => {
