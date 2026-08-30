@@ -1,0 +1,35 @@
+name: Bug report
+description: Report a reproducible CurveWeave problem
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping improve CurveWeave. Do not attach confidential SVG files.
+  - type: textarea
+    id: description
+    attributes:
+      label: What happened?
+      description: Describe the behavior and what you expected instead.
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction steps
+      placeholder: "1. Open…\n2. Select…\n3. Export…"
+    validations:
+      required: true
+  - type: input
+    id: browser
+    attributes:
+      label: Browser and version
+      placeholder: Chrome 151, Firefox 145, Safari 19…
+    validations:
+      required: true
+  - type: textarea
+    id: svg
+    attributes:
+      label: Minimal non-sensitive SVG (optional)
+      description: Paste only a small sanitized reproduction if needed.
+      render: xml

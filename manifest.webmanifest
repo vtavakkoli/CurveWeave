@@ -1,0 +1,13 @@
+{
+  "name": "CurveWeave",
+  "short_name": "CurveWeave",
+  "description": "Browser-native SVG editor, inspector, repair and optimization toolkit.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b0d12",
+  "theme_color": "#0d1017",
+  "icons": [
+    { "src": "assets/icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
