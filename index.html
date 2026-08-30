@@ -12,6 +12,11 @@
   <link rel="icon" href="assets/icon.svg" type="image/svg+xml" />
   <link rel="manifest" href="manifest.webmanifest" />
   <link rel="stylesheet" href="styles.css" />
+  <style>
+    .repair-node-summary{margin:10px 0 2px;color:var(--muted);font-size:12px;text-align:center}
+    #textStyleSection{border-top:1px solid var(--border);margin-top:12px;padding-top:12px}
+    #textStyleSection select{min-width:0;width:100%}
+  </style>
 </head>
 <body>
   <noscript><div class="noscript">CurveWeave requires JavaScript to edit SVG documents.</div></noscript>
@@ -61,6 +66,7 @@
         <button class="tool" data-tool="ellipse" title="Ellipse (E)"><span>○</span><small>E</small></button>
         <button class="tool" data-tool="pen" title="Pen (P)"><span>⌁</span><small>P</small></button>
         <button class="tool" data-tool="text" title="Text (T)"><span>T</span><small>T</small></button>
+        <button class="tool" id="connectorTool" title="Connector (C)"><span>↗</span><small>C</small></button>
         <div class="rail-separator"></div>
         <button class="tool" id="duplicateBtn" title="Duplicate (Ctrl/Cmd+D)"><span>⧉</span></button>
         <button class="tool danger-hover" id="deleteBtn" title="Delete selection (Delete)"><span>⌫</span></button>
@@ -132,6 +138,23 @@
             <div class="property-row"><label for="strokeWidth">Stroke width</label><input id="strokeWidth" type="number" min="0" step="0.5"></div>
             <div class="property-row"><label for="opacityRange">Opacity</label><div class="range-wrap"><input id="opacityRange" type="range" min="0" max="1" step="0.01"><output id="opacityValue">100%</output></div></div>
             <div class="property-row" id="textRow" hidden><label for="textValue">Text</label><input id="textValue" type="text"></div>
+            <div id="textStyleSection" hidden>
+              <div class="property-row"><label for="fontFamily">Font</label><select id="fontFamily">
+                <option value="system-ui, sans-serif">System UI</option>
+                <option value="Arial, sans-serif">Arial</option>
+                <option value="Helvetica, Arial, sans-serif">Helvetica</option>
+                <option value="Verdana, sans-serif">Verdana</option>
+                <option value="Trebuchet MS, sans-serif">Trebuchet MS</option>
+                <option value="Georgia, serif">Georgia</option>
+                <option value="Times New Roman, serif">Times New Roman</option>
+                <option value="Courier New, monospace">Courier New</option>
+                <option value="monospace">Monospace</option>
+              </select></div>
+              <div class="property-grid">
+                <label>Font size<input id="fontSize" type="number" min="1" max="1000" step="1"></label>
+                <label>Font color<input id="fontColor" type="color" value="#000000"></label>
+              </div>
+            </div>
             <div class="object-actions">
               <button class="mini-button" id="groupBtn">Group selection</button>
               <button class="mini-button" id="ungroupBtn">Ungroup</button>
@@ -152,7 +175,7 @@
     </main>
 
     <footer class="statusbar">
-      <span id="statusMessage">Ready — V select · R rectangle · E ellipse · P pen · T text</span>
+      <span id="statusMessage">Ready — V select · R rectangle · E ellipse · P pen · T text · C connector · Arrow keys move</span>
       <span>100% client-side · <a href="https://github.com/vtavakkoli/CurveWeave" target="_blank" rel="noreferrer">Open source</a></span>
     </footer>
   </div>
@@ -163,16 +186,18 @@
     <form method="dialog" class="modal-card">
       <button class="modal-close" value="cancel" aria-label="Close">×</button>
       <div class="modal-kicker">CurveWeave Repair</div>
-      <h2>SVG cleaned and optimized</h2>
-      <p>CurveWeave removed unsafe or unnecessary markup, normalized numeric precision, and compacted the source without sending it anywhere.</p>
+      <h2>SVG cleaned and geometrically optimized</h2>
+      <p>CurveWeave removes unsafe or unnecessary markup, simplifies redundant path points and Bézier segments, and compacts numeric precision locally in your browser.</p>
       <div class="repair-results">
         <div><span>Before</span><strong id="repairBefore">—</strong></div>
         <div class="arrow">→</div>
         <div><span>After</span><strong id="repairAfter">—</strong></div>
         <div class="saved"><span>Saved</span><strong id="repairSaved">—</strong></div>
       </div>
+      <p class="repair-node-summary" id="repairNodes">Path simplification ready</p>
       <label class="precision-control">Numeric precision <select id="precisionSelect"><option>2</option><option selected>3</option><option>4</option><option>5</option></select> decimals</label>
-      <div class="modal-actions"><button class="button ghost" value="cancel">Cancel</button><button class="button primary" value="confirm" id="confirmRepairBtn">Apply repair</button></div>
+      <label class="precision-control">Curve tolerance <select id="simplifyTolerance"><option value="0">Lossless</option><option value="0.25">0.25 — precise</option><option value="0.75" selected>0.75 — balanced</option><option value="1.5">1.5 — stronger</option><option value="3">3 — aggressive</option></select> units</label>
+      <div class="modal-actions"><button class="button ghost" value="cancel">Cancel</button><button type="button" class="button primary" id="confirmRepairBtn">Apply repair</button></div>
     </form>
   </dialog>
 
@@ -182,7 +207,7 @@
       <h1>A focused SVG workspace,<br>right in your browser.</h1>
       <p>Edit, inspect, clean, optimize and export SVG files. Your artwork never needs to leave your device.</p>
       <div class="welcome-features">
-        <span>✦ Repair & optimize</span><span>⌁ Vector editing</span><span>⌘ Source inspector</span><span>◈ Local autosave</span>
+        <span>✦ Repair & optimize</span><span>⌁ Vector editing</span><span>↗ Smart connectors</span><span>⌘ Source inspector</span><span>◈ Local autosave</span>
       </div>
       <div class="modal-actions"><button class="button ghost" value="cancel" id="welcomeOpenBtn">Open SVG</button><button class="button primary" value="confirm">Start editing</button></div>
     </form>
@@ -190,5 +215,6 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script type="module" src="src/app.js"></script>
+  <script type="module" src="src/enhancements.js"></script>
 </body>
 </html>
